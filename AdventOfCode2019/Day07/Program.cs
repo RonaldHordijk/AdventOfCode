@@ -201,8 +201,8 @@ namespace Day07
                     {
                         machines[i].input.Add(result);
                         long r = machines[i].Process();
-                        if (r == 0)
-                            break;
+                        if (machines[i].ended)
+                            continue;
                         result = r;
                     }
                 }
