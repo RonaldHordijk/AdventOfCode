@@ -1,91 +1,43 @@
 ﻿var lines = File.ReadAllLines("data.txt");
 
-Int64 som = 0;
-
-//foreach (var line in lines)
-//{
-//    var digits = line.Where(c => Char.IsDigit(c)).ToArray();
-
-//    som += 10 * (digits[0] - '0') + digits[^1] - '0';
-//}
-
-Console.WriteLine($"som {som}");
-
-som = 0;
-
-List<string> numbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
-
+List<Int64> list1 = [];
+List<Int64> list2 = [];
 
 foreach (var line in lines)
 {
-    var workline = line;
+    var words = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-    int index = FindFirst(workline);
-    if (index >= 0)
-    {
-        workline = workline.Replace(numbers[index], (index + 1).ToString());
-        //index = FindFirst(workline);
-    }
-
-    var digits = workline.Where(c => Char.IsDigit(c)).ToArray();
-
-    som += 10 * (digits[0] - '0');
-
-    workline = line;
-    index = FindLast(workline);
-    if (index >= 0)
-    {
-        workline = workline.Replace(numbers[index], (index + 1).ToString());
-        //index = FindFirst(workline);
-    }
-
-    digits = workline.Where(c => Char.IsDigit(c)).ToArray();
-
-    som += digits[^1] - '0';
-
-    //Console.WriteLine($"{line} {workline} {digits[0]}{digits[^1]} {som}");
+    list1.Add(Convert.ToInt64(words[0]));
+    list2.Add(Convert.ToInt64(words[1]));
 }
 
-Console.WriteLine($"som {som}");
+list1.Sort();
+list2.Sort();
 
-int FindFirst(string workline)
+Int64 diffsom = 0;
+
+for (int i = 0; i < list1.Count; i++)
 {
-    int first = -1;
-    int minIndex = int.MaxValue;
-    for (int i = 0; i < numbers.Count; i++)
-    {
-        var index = workline.IndexOf(numbers[i]);
-        if (index < 0)
-            continue;
-
-        if (index < minIndex)
-        {
-            first = i;
-            minIndex = index;
-        }
-
-    }
-
-    return first;
+    diffsom += Math.Abs(list1[i] - list2[i]);
 }
 
-int FindLast(string workline)
+Console.WriteLine($"som {diffsom}");
+
+// part 2
+
+Int64 sum = 0;
+for (int i = 0; i < list1.Count; i++)
 {
-    int first = -1;
-    int maxIndex = int.MinValue;
-    for (int i = 0; i < numbers.Count; i++)
+    int count = 0;
+    for (int j = 0; j < list2.Count; j++)
     {
-        var index = workline.LastIndexOf(numbers[i]);
-        if (index < 0)
-            continue;
-
-        if (index > maxIndex)
+        if (list1[i] == list2[j])
         {
-            first = i;
-            maxIndex = index;
+            count++;
         }
-
     }
 
-    return first;
+    sum += count * list1[i];
 }
+
+Console.WriteLine($"som 2 {sum}");
